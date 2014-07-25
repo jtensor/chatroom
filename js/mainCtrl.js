@@ -2,7 +2,14 @@ var app = angular.module('twitterClone');
 
 app.controller('mainCtrl', function($scope, parseService){
   //In your controller you'll have a getParseData function and a postData function, but should be placed on $scope.
-
+$scope.getParseData = function(){
+  parseService.getData().then(function(results){
+    $scope.messages=results;
+  })
+}
+setInterval(function(){
+  $scope.getParseData();
+},1000)
   //The getParseData function will call the getData method on the parseService object. You'll then save the result of that request to 
   //your controllers $scope as messages ($scope.messages)
 
@@ -11,7 +18,14 @@ app.controller('mainCtrl', function($scope, parseService){
   //The postData function will take whatever the user typed in (hint: look at the html and see what ng-model correlates to on the input box),
   //pass that text to the postData method on the parseService object which will then post it to the parse backend.
 
+$scope.postData=function(){
+  parseService.postData($scope.message)
+}
 
+//new Date(message.createdAt).toLocaleString()
+$scope.formatDate=function(dateString){
+  return new Date(dateString).toLocaleString();
+}
 
 
   //uncomment this code when your getParseData function is finished

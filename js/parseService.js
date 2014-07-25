@@ -5,10 +5,24 @@ app.service('parseService', function($http, $q){
 
 
   //On the line below create the postData method. This method will add data to the parse backend.
-  //The url for the request needs to be 'https://api.parse.com' + '/1/classes/chat'
+  //The url for the request needs to be 'https://api.parse.com/1/classes/chat'
   //Also, remember that $http returns a promise. So if you return the whole $http call (return $http(...)), you can then use .then in your controller.
   
   //postData method here
+  // this.postData = function(message){
+  //                   var deferred=$q.defer();
+                      
+  //                    return $http({
+  //                     'method':'POST',
+  //                    'data':{text:message},
+  //                     'url':'https://api.parse.com' + '/1/classes/chat'
+  //                   }).then(function(data){
+  //                     deferred.resolve(data)
+  //                   })
+  //                 }  Or my way
+this.postData=function(message){
+      return $http.post('https://api.parse.com/1/classes/chat', {'text': message});
+    };
 
 
   //On the line below create a getData method. This method will retrieve data from the parse backend.
@@ -26,4 +40,16 @@ app.service('parseService', function($http, $q){
   */
 
   //getData method here
+
+  this.getData = function(){
+    //var deferred = $q.defer();
+    return $http({
+      'method':'GET',
+      'url':'https://api.parse.com/1/classes/chat?order=-createdAt'
+    }).then(function(res){
+      return res.data.results;
+    })
+  }
+
+
 });
